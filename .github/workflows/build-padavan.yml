@@ -39,7 +39,7 @@ jobs:
         mkdir -p /opt/images/
     - name: Build Firmware
       env:
-        TNAME: K2P-5.0
+        TNAME: NEWIFI3
       run: |
         cd /opt/rt-n56u/trunk
         if [ ! -f configs/templates/$TNAME.config ] ; then
@@ -70,22 +70,43 @@ jobs:
         echo "CONFIG_FIRMWARE_INCLUDE_SSSERVER=n" >> .config #SS server
         echo "CONFIG_FIRMWARE_INCLUDE_DNSFORWARDER=n" >> .config #DNSFORWARDER
         echo "CONFIG_FIRMWARE_INCLUDE_ADBYBY=y" >> .config #adbyby plus+
-        echo "CONFIG_FIRMWARE_INCLUDE_FRPC=n" >> .config #内网穿透FRPC
+        echo "CONFIG_FIRMWARE_INCLUDE_FRPC=y" >> .config #内网穿透FRPC
         echo "CONFIG_FIRMWARE_INCLUDE_FRPS=n" >> .config #内网穿透FRPS
         echo "CONFIG_FIRMWARE_INCLUDE_TUNSAFE=n" >> .config #TUNSAFE
         echo "CONFIG_FIRMWARE_INCLUDE_ALIDDNS=y" >> .config #阿里DDNS
         echo "CONFIG_FIRMWARE_INCLUDE_SMARTDNS=y" >> .config #smartdns
         echo "CONFIG_FIRMWARE_INCLUDE_SMARTDNSBIN=y" >> .config #smartdns二进制文件
-        echo "CONFIG_FIRMWARE_INCLUDE_V2RAY=n" >> .config #集成v2ray执行文件，如果不集成，会从网上下载下来执行，不影响正常使用
+        echo "CONFIG_FIRMWARE_INCLUDE_V2RAY=y" >> .config #集成v2ray执行文件，如果不集成，会从网上下载下来执行，不影响正常使用
         echo "CONFIG_FIRMWARE_INCLUDE_TROJAN=n" >> .config #集成trojan执行文件，如果不集成，会从网上下载下来执行，不影响正常使用
         echo "CONFIG_FIRMWARE_INCLUDE_KOOLPROXY=y" >> .config #KP广告过滤
         echo "CONFIG_FIRMWARE_INCLUDE_CADDY=y" >> .config #在线文件管理服务
         echo "CONFIG_FIRMWARE_INCLUDE_CADDYBIN=n" >> .config #集成caddu执行文件，此文件有13M,请注意固件大小。如果不集成，会从网上下载下来执行，不影响正常使用
+        echo "CONFIG_FIRMWARE_INCLUDE_SMBD36=y" >>.config #samba3
+        echo "CONFIG_FIRMWARE_INCLUDE_FTPD=y" >>.config #ftp
+        echo "CONFIG_FIRMWARE_INCLUDE_OPENSSH=y" >>.config #openssl
+        echo "CONFIG_FIRMWARE_INCLUDE_OPENSSL_EC=y" >>.config #Elliptic Curves (EC)
+        echo "CONFIG_FIRMWARE_INCLUDE_MINIDLNA=y" >>.config #Minidlna UPnP
+        echo "CONFIG_FIRMWARE_INCLUDE_TRANSMISSION_WEB_CONTROL=y" >>.config #webui
+        
+
         #########################################################################################
         #自定义添加其它功能请参考源码configs/templates/目录下的config文件。按照上面的格式添加即可
         #格式如下：
         #sed -i '/自定义项/d' .config
         #echo "自定义项=y" >> .config
+        echo "CONFIG_FIRMWARE_ENABLE_IPV6=y" >> .config ### Enable IPv6 support
+echo "CONFIG_FIRMWARE_ENABLE_USB=y" >> .config ### Enable USB support
+echo "CONFIG_FIRMWARE_ENABLE_UFSD=y" >> .config ### Enable NTFS filesystem support via Paragon "ufsd" driver. ~0.4MB
+echo "CONFIG_FIRMWARE_ENABLE_FAT=y" >> .config ### Enable FAT/FAT32 filesystem support. ~0.1MB
+echo "CONFIG_FIRMWARE_ENABLE_EXFAT=y" >> .config ### Enable exFAT (FAT/FAT32 too) filesystem support. ~0.12MB
+echo "CONFIG_FIRMWARE_ENABLE_EXT2=n" >> .config ### Enable EXT2 filesystem support. ~0.1MB
+echo "CONFIG_FIRMWARE_ENABLE_EXT3=n" >> .config ### Enable EXT3 filesystem support. ~0.2MB
+echo "CONFIG_FIRMWARE_ENABLE_EXT4=y" >> .config ### Enable EXT4 (EXT3/2 too) filesystem support. ~0.4MB
+echo "CONFIG_FIRMWARE_INCLUDE_UVC=y" >> .config ### Include UVC camera modules. ~0.2MB
+echo "CONFIG_FIRMWARE_INCLUDE_HID=y" >> .config ### Include USB-HID modules. ~0.2MB
+echo "CONFIG_FIRMWARE_INCLUDE_SERIAL=y" >> .config ### Include USB-Serial modules (e.g. pl2303). ~0.03MB
+echo "CONFIG_FIRMWARE_INCLUDE_AUDIO=y" >> .config ### Include USB-Audio modules ~0.46MB
+echo "CONFIG_FIRMWARE_INCLUDE_QOS=y" >> .config ### Include network QoS scheduling modules. ~0.2MB
         #########################################################################################
         sudo ./clear_tree
         sudo ./build_firmware_bkye $TNAME
